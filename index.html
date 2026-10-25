@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloom & Brew Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+
+  <header>
+    <nav class="nav">
+      <div class="logo"><span class="emoji">🌸</span> Bloom &amp; Brew</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="cart-btn" onclick="openCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-text">
+        <h1>Welcome to Bloom &amp; Brew ☕</h1>
+        <p>A cozy little cafe serving pastel-perfect drinks, fresh bites, and sweet treats. Come in, slow down, and savor the moment.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">View Menu</button>
+          <button class="btn btn-ghost" onclick="openCart()">My Cart</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>Today's Special</h3>
+        <p>Rose Latte + Croissant combo — $7.00</p>
+        <div class="hours">🕐 Open daily 8:00 AM – 8:00 PM<br>📍 12 Blossom Street, Petal Town</div>
+      </div>
+    </section>
+
+      <section class="section" id="menu">
+      <div class="section-title">
+        <h2>Our Menu 🌷</h2>
+        <p>Freshly crafted with love and a sprinkle of magic</p>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+        <button class="filter-btn" onclick="setFilter('drinks', this)">Drinks</button>
+        <button class="filter-btn" onclick="setFilter('food', this)">Food</button>
+        <button class="filter-btn" onclick="setFilter('desserts', this)">Desserts</button>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="section-title">
+        <h2>About Us 🌸</h2>
+        <p>A cozy corner for coffee lovers and sweet tooths</p>
+      </div>
+      <div style="max-width:700px;margin:0 auto;text-align:center;color:var(--muted);font-size:16px;">
+        Bloom &amp; Brew was born from a love for pastel skies and warm mugs. We source our beans ethically, bake our pastries in-house, and pour every cup with care. Whether you're here to work, meet friends, or just breathe, we've saved you a seat.
+      </div>
+    </section>
+
+    </main>
+
+  <div class="overlay" id="overlay" onclick="closeCart()"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-header">
+      <h3>Your Cart 🧺</h3>
+      <button class="close-btn" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="drawer-footer">
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+        <div class="row"><span>Tax (8%)</span><span id="cartTax">$0.00</span></div>
+        <div class="row grand"><span>Total</span><span id="cartTotal">$0.00</span></div>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn" onclick="openModal()" disabled>Checkout →</button>
+    </div>
+  </aside>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h3>Place Your Order 🌷</h3>
+      <p>Fill in your details and we'll get brewing!</p>
+      <form id="orderForm">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="custName" placeholder="Your name" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="custPhone" placeholder="+1 555 0000" />
+          </div>
+          <div class="form-group">
+            <label>Order Type</label>
+            <select id="orderType">
+              <option>Dine In</option>
+              <option>Takeaway</option>
+              <option>Delivery</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Notes (optional)</label>
+          <textarea id="custNote" placeholder="Allergies, special requests..."></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Place Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="successModal">
+    <div class="modal-card" style="text-align:center;">
+      <div style="font-size:60px;margin-bottom:10px;">🎉</div>
+      <h3>Order Placed!</h3>
+      <p>Thank you, <span id="orderName">Guest</span>! Your order <strong id="orderNo">#0000</strong> is being prepared.</p>
+      <p style="font-size:14px;">Total: <strong id="orderTotal">$0.00</strong> · <span id="orderTypeOut">Dine In</span></p>
+      <button class="btn btn-primary" style="margin-top:14px;" onclick="closeSuccess()">Yay! ✨</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Added to cart ✨</div>
+
+  <footer id="contact">
+    <p>Made with <span class="hearts">♥</span> by Bloom &amp; Brew Cafe</p>
+    <p style="margin-top:6px;">© 2026 Bloom &amp; Brew · Petal Town</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
